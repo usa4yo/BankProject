@@ -8,12 +8,8 @@
  * Due Date     : 2017-04-27
  */
 
-import java.security.cert.PKIXRevocationChecker.Option;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -23,9 +19,8 @@ public class DisplayOutput extends JFrame{
      *  Default serial version UID 
      */
     private static final long serialVersionUID = 1L;
-    
-    
-    // Literal for the menu options
+
+    // Literal for String
     public static final String LITERAL_BANK = "BOFM - Bank of Fake Money"; 
     public static final String LOGIN_USER_INFO = "Customer Information";
     public static final String OPEN_MESSAGE = "In order to signin with the BOFM, you need to provide your ";
@@ -33,68 +28,74 @@ public class DisplayOutput extends JFrame{
     public static final String NEW_USER_OPEN = " New User Signin ";
     public static final String RETURNING_USER_LOGIN = " Returning User Login ";
     public static final String LITERAL_SELECT = "Welcome! How can I help you today?";
-    public static final String LITERAL_OPEN = "Signin";
+    public static final String LITERAL_MENU = "What would you like to do?";
+    public static final String LITERAL_BALANCE = "See Balance";
+    public static final String LITERAL_DEPOSIT = "Make a Deposit";
+    public static final String LITERAL_WITHDRAW = "Make a Withdraw";    
+    public static final String LITERAL_OPEN = "Open Account";
     public static final String LITERAL_LOGIN = "Login";
+    public static final String LITERAL_LOGOUT = "Logout";    
     public static final String LITERAL_EXIT = "Exit";    
 
+    public static String option;
     /**
      * @param bank The bank object is required here so you can find out if a customer is logged in
      */
     public void menu(Bank bank){
         if(null == bank.getCurrentCustomer()){
-            // if no customer is logged in, display these menus:
-            // Defined an array to hold the 2 principal options on the menu with a third option to exit if needed.
-            List<String> optionList = new ArrayList<String>();
             
-            // populate the array optionList with 1, 2, 3
-            optionList.add(LITERAL_OPEN);
-            optionList.add(LITERAL_LOGIN);
-            optionList.add(LITERAL_EXIT);
+            SelectMenu(option);
+            System.out.println("Menu Option: " + option);
             
-            // Request the user to select a value from 1 to 3
-            Object[] options = optionList.toArray();
-            
-            int value = JOptionPane.showOptionDialog(null,
-                    LITERAL_SELECT,
-                    LITERAL_BANK,
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.PLAIN_MESSAGE,                
-                    null,
-                    options,
-                    optionList.get(0));
-
-            // store the value in variable opt
-            String option = optionList.get(value); 
         
         } else {
             // if a customer is logged in, display these menus:
-            System.out.println("Le Banque | User Name: "
-                         + bank.getCurrentCustomer().getName()
-                         + ", User ID: " 
-                         + bank.getCurrentCustomer().getId() 
-                         + ", Account: " 
-                         + bank.getCurrentCustomer().getAccountNumber()
-                         + ", Balance: " 
-                         + NumberFormat.getCurrencyInstance(new Locale("en", "US")).format(bank.getCurrentCustomer().getBalance().getBalance()));
+            popupNewCustomerDetailLine(bank.getCurrentCustomer());
             
             if(bank.getCurrentCustomer().getBalance().getBalance() > 0){
-                System.out.println("WITHDRAWAL");
-            }
-            // Display Deposit info and logout
-            
+                System.out.println("WITHDRAW Transaction");
+            }   // Ending bracket of inner if statement
         }
-        // always display quit
-          
     }
 
 
+    public static String SelectMenu(String selectOption){
+        // Defined an array to hold the 2 principal options on the menu with a third option to exit if needed.
+        List<String> optionMenu = new ArrayList<String>();
+        
+        // populate the array optionList with 1, 2, 3
+        optionMenu.add(LITERAL_BALANCE);
+        optionMenu.add(LITERAL_DEPOSIT);
+        optionMenu.add(LITERAL_LOGIN);
+        optionMenu.add(LITERAL_LOGOUT);
+        optionMenu.add(LITERAL_OPEN);
+        optionMenu.add(LITERAL_WITHDRAW);
+        optionMenu.add(LITERAL_EXIT);
+        
+        // Request the user to select a value from 1 to 3
+        Object[] options = optionMenu.toArray();
+        
+        int value = JOptionPane.showOptionDialog(null,
+                LITERAL_SELECT,
+                LITERAL_BANK,
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.PLAIN_MESSAGE,                
+                null,
+                options,
+                optionMenu.get(0));
+
+        return option = optionMenu.get(value); 
+        
+    }
+
+    
     /**
-     * you get it.
+     * Display Customer Info
      */
     public void popupNewCustomerDetailLine(Customer newCustomer) {
 
         String infoMessage = ("New Customer created: \n" 
-                   + newCustomer.getName()
+                   + newCustomer.getCustomer()
                    + " id = \n"
                    + newCustomer.getId()
                    + " account = \n"
@@ -103,29 +104,64 @@ public class DisplayOutput extends JFrame{
     }   // Ending bracket of popupNewCustomerDetailLine
 
     /**
-     * Display Info box
+     * 
+     * @param infoMessage
+     * @param titleBar
      */
     public static void popupInfoBox(String infoMessage, String titleBar) {
         System.out.println("Now processing popupInfoBox");
         JOptionPane.showMessageDialog(null,  infoMessage, LITERAL_BANK + " " + titleBar, JOptionPane.INFORMATION_MESSAGE);
     }   // Ending bracket of popupInfoBox
 
+    /**
+     * 
+     * @param infoMessage
+     * @param titleBar
+     */
     public static void popupInfoLogin(String infoMessage, String titleBar) {
         System.out.println("Now processing popupInfoLogin");
-        JOptionPane.showMessageDialog(null,  infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
-    }   // Ending bracket of popupInfoBox
+        JOptionPane.showInputDialog(infoMessage);
+//        JOptionPane.showInputDialog(null,infoMessage, titleBar, JOptionPane.INFORMATION_MESSAGE);
+    }   // Ending bracket of popupInfoLoggin
 
+    /**
+     * 
+     * @param inputString
+     * @param titleBar
+     * @return
+     * 
+     */
+    public static String requestInputString(String inputString, String titleBar) {
+        System.out.println("Now processing requestInputString");
+        JOptionPane.showInputDialog(null,  inputString, titleBar, JOptionPane.INFORMATION_MESSAGE);
+        return inputString;
+    }   // Ending bracket of popupInfoLoggin
 
-    public static void login(String infoMessage) {
-        System.out.println("Running the login method");
-        System.out.println("Processing Customer Information");
-        popupInfoLogin(infoMessage, LOGIN_USER_INFO);
-        
-    }   // Ending bracket of login method
+    /**
+     * 
+     * @param inputDouble
+     * @param titleBar
+     * @return
+     * 
+     */
+    public static double requestInputDouble(Double inputDouble, String titleBar) {
+        System.out.println("Now processing requestInputDouble");
+        JOptionPane.showInputDialog(null,  inputDouble, titleBar, JOptionPane.INFORMATION_MESSAGE);
+        return inputDouble;
+    }   // Ending bracket of popupInfoLoggin
 
-    public static void output() {
-        System.out.println("Running the output method");
-        
-    }   // Ending bracket of output method
-}
+    /**
+     * 
+     * @param inputInteger
+     * @param titleBar
+     * @return
+     * 
+     */
+    public static int requestInputInteger(int inputInteger, String titleBar) {
+        System.out.println("Now processing requestInputInteger");
+        JOptionPane.showInputDialog(null,  inputInteger, titleBar, JOptionPane.INFORMATION_MESSAGE);
+        return inputInteger;
+    }   // Ending bracket of popupInfoLoggin
+    
+}   // Ending bracket of DisplayOutput class
 

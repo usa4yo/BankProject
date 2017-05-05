@@ -12,15 +12,14 @@
 
     private int id;
     private String accountNumber;
-    
-    private String name;
+    private String customer;
     private Balance balance;
     
-     public Customer(int id, String name, String accountNumber, double firstDeposit){
-        this.id = id;
-        this.name = name;
-        this.accountNumber = accountNumber;
-        this.balance = new Balance(firstDeposit);
+     public Customer(int newId, String newCustomer, String newAccountNumber, double newDeposit){
+        this.id = newId;
+        this.customer = newCustomer;
+        this.accountNumber = newAccountNumber;
+        this.balance = new Balance(newDeposit);
     }
     
 
@@ -33,8 +32,8 @@
     /**
      * @param id the id
      */
-    public void setId(int id) {
-        this.id = id;
+    public void setId(int newId) {
+        this.id = newId;
     }
     /**
      * @return the account number
@@ -44,16 +43,16 @@
     }
 
     /**
-     * @return the name
+     * @return the customer
      */
-    public String getName() {
-        return name;
+    public String getCustomer() {
+        return customer;
     }
     /**
-     * @param name the name
+     * @param customer the customer
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setCustomer(String newCustomer) {
+        this.customer = newCustomer;
     }
     /**
      * @return the Balance
@@ -64,7 +63,7 @@
     /**
      * @param balance the Balance
      */
-    public void setBalance(Balance balance) {
-        this.balance = balance;
+    public void setBalance(Balance newBalance) {
+        this.balance = newBalance;
     }
 }

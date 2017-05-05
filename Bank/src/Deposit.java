@@ -11,7 +11,7 @@
 public class Deposit implements TransactionInterface {
 
     @Override
-    public void doTransactionInterface(Customer customer, double amount) {
+    public void doTransaction(Customer customer, double amount) {
         customer.getBalance().setBalance(customer.getBalance().getBalance() + amount);
     }
 

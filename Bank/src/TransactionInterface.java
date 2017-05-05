@@ -9,7 +9,7 @@
  */
 
 public interface TransactionInterface {
-    public void doTransactionInterface(Customer customer, double amount);
+    public void doTransaction(Customer customer, double amount);
 
     
 }   // Ending bracket of TransactionInterface Interface

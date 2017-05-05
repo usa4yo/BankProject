@@ -24,11 +24,11 @@ public class BankDriver {
              
              choice = input.pickTransaction();
              
-             bank.processTransaction(choice, customer, input, output);
+             bank.Transaction(choice, customer, input, output);
              
         } while (choice != TransactionType.QUIT);
         
-    }        
+    }   // Ending bracket of the main method        
 
 //        Display.input();
 //        Display.output();
@@ -40,5 +40,7 @@ public class BankDriver {
         bank = new Bank();
         input = new DisplayInput();
         output = new DisplayOutput();
-    }
-}
+        
+    }   // Ending bracket of initializeBank method
+    
+}   // Ending bracket of BankDriver Class

@@ -16,6 +16,4 @@ public enum TransactionType {
     OPEN,
     QUIT,
     WITHDRAW;
-    
-    
 }   // Ending bracket of TransactionType enum

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class        : BankDriver 
+ * Class        : Bank 
  * Project 12   : Banking
  * @author      : ar25 (Yves Ouellet)
  * Email        : yves.ouellet@bcbssc.com
@@ -16,6 +16,17 @@ import java.util.List;
 public class Bank {
     private List<Customer> customers;
     private Customer currentCustomer;
+    
+    // Literal for integer
+    public static final int LITERAL_INTEGER_DEFAULT = 000;
+
+    // Literal for double
+    public static final double LITERAL_DOUBLE_DEFAULT = 200.00;    
+
+    // Literal for String
+    public static final String LITERAL_BANK = "BOFM - Bank of Fake Money";
+    public static final String LITERAL_STRING_DEFAULT = "Full Name";
+    public static final String LITERAL_ACCOUNT_NUMBER = "Please Enter your account number (XXNNN)";
 
     /**
      * @return the customers
@@ -30,19 +41,19 @@ public class Bank {
         this.customers = customers;
     }
     
-	/**
-	 * @return the customer who's logged in
-	 */
-	public Customer getCurrentCustomer() {
-		return currentCustomer;
-	}
+    /**
+     * @return the customer who's logged in
+     */
+    public Customer getCurrentCustomer() {
+        return currentCustomer;
+    }
     /**
      * @param currentCustomer the current customer. only set on successful login
      */
     private void setCurrentCustomer(Customer currentCustomer) {
-		this.currentCustomer = currentCustomer;
-	}
-	
+        this.currentCustomer = currentCustomer;
+    }
+    
     /**
      *  constructors gonna construct... -uct -uct.
      */
@@ -153,57 +164,69 @@ public class Bank {
         return newId;
     }
 
-	/**
-	 * @param choice which transaction they picked
-	 * @param customer who they are, if someone's logged in
-	 * @param input The input class
-	 * @param output The output class
-	 */
-	public void processTransaction(TransactionType choice, Customer customer, DisplayInput input, DisplayOutput output) {
-		switch(choice){
-		case LOGIN:
-			output.popupCustomerIdPrompt();
-			int id = input.requestId();
-			
-			output.popupAccountNumberPrompt();
-			String account = input.requestString();
-			
-			setCurrentCustomer(getCustomer(id, account));
-			
-			break;
-		case LOGOUT:
-			setCurrentCustomer(null);
-			break;
-		case OPEN:
-			output.popupCustomerNamePrompt();
-			String name = input.requestString();
-			
-			output.popupOpeningBalancePrompt();
-			double value = input.requestAmount(200, -1);
-			
-			Customer newCustomer = createCustomer(name, value);
-			
-			output.popupNewCustomerDetailLine(newCustomer);
-			
-			break;
-		case WITHDRAW:
-			WithdrawalTransaction withdraw = new WithdrawalTransaction();
-			
-			output.printAmountPrompt();
-			
-			withdraw.doTransaction(currentCustomer, input.requestAmount(0, currentCustomer.getBalance().getValue()));
-			
-			break;
-		case DEPOSIT:
-			DepositTransaction deposit = new DepositTransaction();
-			
-			output.printAmountPrompt();
-			
-			deposit.doTransaction(currentCustomer, input.requestAmount(0, -1));
-			break;
-		case QUIT:
-			//no-op.  sends us back to the main loop
-			break;
-		}
-	}
+    /**
+     * @param choice which transaction they picked
+     * @param customer who they are, if someone's logged in
+     * @param input The input class
+     * @param output The output class
+     */
+    public void Transaction(TransactionType choice, Customer customer, DisplayInput input, DisplayOutput output) {
+        switch(choice){
+        case LOGIN:
+            output.requestInputInteger(LITERAL_INTEGER_DEFAULT, LITERAL_BANK);
+            int id = input.requestId();
+            
+            output.requestInputString(LITERAL_ACCOUNT_NUMBER, LITERAL_BANK);
+            String account = input.requestString();
+            
+            setCurrentCustomer(getCustomer(id, account));
+            
+            break;
+            
+        case LOGOUT:
+            setCurrentCustomer(null);
+
+            break;
+            
+        case OPEN:
+            output.requestInputString(LITERAL_STRING_DEFAULT, LITERAL_BANK);
+            String name = input.requestString();
+            
+            output.requestInputDouble(LITERAL_DOUBLE_DEFAULT, LITERAL_BANK);
+            double value = input.requestAmount(200, -1);
+            
+            Customer newCustomer = createCustomer(name, value);
+            
+            output.popupNewCustomerDetailLine(newCustomer);
+            
+            break;
+            
+        case WITHDRAW:
+            Withdraw withdraw = new Withdraw();
+            
+//            output.printAmountPrompt();
+            
+            withdraw.doTransaction(currentCustomer, input.requestAmount(0, currentCustomer.getBalance().getBalance()));
+            
+            break;
+            
+        case DEPOSIT:
+            Deposit deposit = new Deposit();
+            
+//            output.printAmountPrompt();
+            
+            deposit.doTransaction(currentCustomer, input.requestAmount(0, -1));
+            break;
+            
+        case QUIT:
+            //no-op.  sends us back to the main loop
+            
+            break;
+        
+        default:
+
+            break;
+
+        }
+    }
 }

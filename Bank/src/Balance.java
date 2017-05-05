@@ -14,8 +14,8 @@ public class Balance {
     /**
      * @param firstDeposit
      */
-    public Balance(double firstDeposit){
-        setBalance(firstDeposit);
+    public Balance(double newDeposit){
+        setBalance(newDeposit);
     }
        
     /**
